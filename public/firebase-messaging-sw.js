@@ -19,3 +19,16 @@ const firebaseConfig = {
 // messages.
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  // Customize notification here
+  const notificationTitle = 'Background Message Title';
+  const notificationOptions = {
+    body: 'Background Message body.',
+    icon: 'https://evoclass.ai/3f6b4f2fa3ab106a83dc.ico'
+  };
+
+  self.registration.showNotification(notificationTitle,
+    notificationOptions);
+});
