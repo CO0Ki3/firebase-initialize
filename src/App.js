@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { messaging } from "./firebaseInit";
+
+const message = getMessaging();
+
+onMessage(message, (payload) => {
+  console.log(payload.notification);
+});
+
+getToken(messaging, {
+  vapidKey:
+    `MY_VAPID_KEY`,
+})
+  .then((currentToken) => {
+    onMessage((payload) => {
+      console.log(payload.notification);
+    });
+    if (currentToken) {
+      console.log("getToken: " + currentToken);
+    } else {
+      console.log(
+        "No registration token available. Request permission to generate one."
+      );
+    }
+  })
+  .catch((err) => {
+    console.log("An error occurred while retrieving token. ", err);
+  });
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>FCM TEST</h1>
     </div>
   );
 }
